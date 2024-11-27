@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venta de Boletos de Autobús</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form, .confirmation {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        input, select {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        img {
+            margin: 20px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Venta de Boletos de Autobús</h1>
+        <form id="ticketForm">
+            <label for="name">Nombre del pasajero:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="age">Edad:</label>
+            <input type="number" id="age" name="age" min="1" required>
+
+            <label for="destination">Destino:</label>
+            <input type="text" id="destination" name="destination" value="Universidad Tecnológica de Matamoros" readonly>
+
+            <label for="career">Carrera:</label>
+            <select id="career" name="career" required>
+                <option value="">Selecciona tu carrera</option>
+                <option value="OCI">OCI</option>
+                <option value="TICS">TICS</option>
+                <option value="Mecatronica">Mecatrónica</option>
+            </select>
+
+            <label for="tickets">Cantidad de boletos:</label>
+            <input type="number" id="tickets" name="tickets" min="1" required>
+
+            <button type="submit">Comprar Boletos</button>
+        </form>
+        <div id="confirmation" class="confirmation" style="display:none;">
+            <h1>Confirmación de Compra</h1>
+            <p><strong>Nombre del pasajero:</strong> <span id="confName"></span></p>
+            <p><strong>Edad:</strong> <span id="confAge"></span></p>
+            <p><strong>Destino:</strong> <span id="confDestination"></span></p>
+            <p><strong>Carrera:</strong> <span id="confCareer"></span></p>
+            <p><strong>Cantidad de boletos:</strong> <span id="confTickets"></span></p>
+            <img id="qrCode" src="" alt="Código QR">
+        </div>
+    </div>
+    <script>
+        document.getElementById('ticketForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const destination = document.getElementById('destination').value;
+            const career = document.getElementById('career').value;
+            const tickets = document.getElementById('tickets').value;
+
+            document.getElementById('confName').textContent = name;
+            document.getElementById('confAge').textContent = age;
+            document.getElementById('confDestination').textContent = destination;
+            document.getElementById('confCareer').textContent = career;
+            document.getElementById('confTickets').textContent = tickets;
+
+            const qrCodeData = `Nombre: ${name}, Edad: ${age}, Destino: ${destination}, Carrera: ${career}, Boletos: ${tickets}`;
+            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrCodeData)}&size=150x150`;
+            document.getElementById('qrCode').src = qrCodeUrl;
+
+            document.getElementById('ticketForm').style.display = 'none';
+            document.getElementById('confirmation').style.display = 'flex';
+        });
+    </script>
+</body>
+</html>
